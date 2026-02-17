@@ -88,11 +88,12 @@ final class ExerciseHistoryService {
         return result
     }
 
-    /// Returns the total volume (sum of reps × load) from the last completed session for this exercise.
+    /// Returns the total volume (sum of reps × load × multiplier) from the last completed session for this exercise.
     func lastSessionVolume(for exercise: Exercise) -> Double? {
         guard let lastSession = history(for: exercise).first else { return nil }
+        let multiplier: Double = exercise.isUnilateral ? 2 : 1
         let volume = lastSession.sets.reduce(0.0) { sum, record in
-            sum + Double(record.reps ?? 0) * (record.load ?? 0)
+            sum + Double(record.reps ?? 0) * (record.load ?? 0) * multiplier
         }
         return volume > 0 ? volume : nil
     }

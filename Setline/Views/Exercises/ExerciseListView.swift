@@ -114,6 +114,15 @@ private struct ExerciseRow: View {
                 Text(exercise.exerciseType.rawValue)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                if exercise.isUnilateral {
+                    Text("Unilatéral")
+                        .font(.caption)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.orange.opacity(0.15))
+                        .foregroundStyle(.orange)
+                        .cornerRadius(4)
+                }
             }
         }
         .padding(.vertical, 2)

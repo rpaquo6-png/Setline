@@ -11,7 +11,7 @@ struct DefaultExerciseLibrary {
         // Insert all exercises and build a name -> Exercise lookup
         var exercisesByName: [String: Exercise] = [:]
         for def in defaultExercises {
-            let exercise = Exercise(name: def.name, bodyPart: def.bodyPart, exerciseType: def.exerciseType)
+            let exercise = Exercise(name: def.name, bodyPart: def.bodyPart, exerciseType: def.exerciseType, isUnilateral: def.isUnilateral)
             modelContext.insert(exercise)
             exercisesByName[def.name] = exercise
         }
@@ -37,12 +37,56 @@ struct DefaultExerciseLibrary {
         try? modelContext.save()
     }
 
+    // MARK: - Migration for existing users
+
+    static func migrateUnilateral(modelContext: ModelContext) {
+        let unilateralNames: Set<String> = [
+            "Développé couché (haltères)",
+            "Développé incliné (haltères)",
+            "Écarté couché (haltères)",
+            "Rowing haltère (un bras)",
+            "Pull-over (haltère)",
+            "Développé militaire (haltères)",
+            "Élévations latérales (haltères)",
+            "Élévations frontales (haltères)",
+            "Oiseau (haltères)",
+            "Élévations latérales (poulie)",
+            "Développé Arnold",
+            "Shrugs (haltères)",
+            "Curl biceps (haltères)",
+            "Curl marteau (haltères)",
+            "Curl incliné (haltères)",
+            "Curl concentré",
+            "Extension triceps (haltère, au-dessus de la tête)",
+            "Kickback triceps (haltère)",
+            "Fentes (haltères)",
+            "Hip thrust (haltère)",
+            "Kickback fessier (poulie)",
+        ]
+
+        let descriptor = FetchDescriptor<Exercise>()
+        guard let exercises = try? modelContext.fetch(descriptor) else { return }
+
+        var changed = false
+        for exercise in exercises {
+            if unilateralNames.contains(exercise.name) && !exercise.isUnilateral {
+                exercise.isUnilateral = true
+                changed = true
+            }
+        }
+
+        if changed {
+            try? modelContext.save()
+        }
+    }
+
     // MARK: - Exercise definitions
 
     private struct ExerciseDef {
         let name: String
         let bodyPart: BodyPart
         let exerciseType: ExerciseType
+        var isUnilateral: Bool = false
     }
 
     // MARK: - Template definitions
@@ -89,11 +133,11 @@ struct DefaultExerciseLibrary {
     private static let defaultExercises: [ExerciseDef] = [
         // MARK: - Pectoraux
         ExerciseDef(name: "Développé couché (barre)", bodyPart: .pectoraux, exerciseType: .barreLibre),
-        ExerciseDef(name: "Développé couché (haltères)", bodyPart: .pectoraux, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Développé couché (haltères)", bodyPart: .pectoraux, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Développé incliné (barre)", bodyPart: .pectoraux, exerciseType: .barreLibre),
-        ExerciseDef(name: "Développé incliné (haltères)", bodyPart: .pectoraux, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Développé incliné (haltères)", bodyPart: .pectoraux, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Développé décliné (barre)", bodyPart: .pectoraux, exerciseType: .barreLibre),
-        ExerciseDef(name: "Écarté couché (haltères)", bodyPart: .pectoraux, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Écarté couché (haltères)", bodyPart: .pectoraux, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Écarté à la poulie vis-à-vis", bodyPart: .pectoraux, exerciseType: .machine),
         ExerciseDef(name: "Pec deck (machine)", bodyPart: .pectoraux, exerciseType: .machine),
         ExerciseDef(name: "Pompes", bodyPart: .pectoraux, exerciseType: .poidsDuCorps),
@@ -103,32 +147,32 @@ struct DefaultExerciseLibrary {
         ExerciseDef(name: "Tractions (pronation)", bodyPart: .dos, exerciseType: .poidsDuCorps),
         ExerciseDef(name: "Tractions (supination)", bodyPart: .dos, exerciseType: .poidsDuCorps),
         ExerciseDef(name: "Rowing barre", bodyPart: .dos, exerciseType: .barreLibre),
-        ExerciseDef(name: "Rowing haltère (un bras)", bodyPart: .dos, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Rowing haltère (un bras)", bodyPart: .dos, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Tirage vertical (poulie haute)", bodyPart: .dos, exerciseType: .machine),
         ExerciseDef(name: "Tirage horizontal (poulie basse)", bodyPart: .dos, exerciseType: .machine),
         ExerciseDef(name: "Soulevé de terre", bodyPart: .dos, exerciseType: .barreLibre),
         ExerciseDef(name: "Rowing T-bar", bodyPart: .dos, exerciseType: .barreLibre),
         ExerciseDef(name: "Tirage poitrine (machine)", bodyPart: .dos, exerciseType: .machine),
-        ExerciseDef(name: "Pull-over (haltère)", bodyPart: .dos, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Pull-over (haltère)", bodyPart: .dos, exerciseType: .poidsLibre, isUnilateral: true),
 
         // MARK: - Épaules
         ExerciseDef(name: "Développé militaire (barre)", bodyPart: .epaules, exerciseType: .barreLibre),
-        ExerciseDef(name: "Développé militaire (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Élévations latérales (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Élévations frontales (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Oiseau (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Élévations latérales (poulie)", bodyPart: .epaules, exerciseType: .machine),
+        ExerciseDef(name: "Développé militaire (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Élévations latérales (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Élévations frontales (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Oiseau (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Élévations latérales (poulie)", bodyPart: .epaules, exerciseType: .machine, isUnilateral: true),
         ExerciseDef(name: "Face pull (poulie)", bodyPart: .epaules, exerciseType: .machine),
-        ExerciseDef(name: "Développé Arnold", bodyPart: .epaules, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Shrugs (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Développé Arnold", bodyPart: .epaules, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Shrugs (haltères)", bodyPart: .epaules, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Shrugs (barre)", bodyPart: .epaules, exerciseType: .barreLibre),
 
         // MARK: - Bras (Biceps)
         ExerciseDef(name: "Curl biceps (barre)", bodyPart: .bras, exerciseType: .barreLibre),
-        ExerciseDef(name: "Curl biceps (haltères)", bodyPart: .bras, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Curl marteau (haltères)", bodyPart: .bras, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Curl incliné (haltères)", bodyPart: .bras, exerciseType: .poidsLibre),
-        ExerciseDef(name: "Curl concentré", bodyPart: .bras, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Curl biceps (haltères)", bodyPart: .bras, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Curl marteau (haltères)", bodyPart: .bras, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Curl incliné (haltères)", bodyPart: .bras, exerciseType: .poidsLibre, isUnilateral: true),
+        ExerciseDef(name: "Curl concentré", bodyPart: .bras, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Curl pupitre (barre EZ)", bodyPart: .bras, exerciseType: .barreLibre),
         ExerciseDef(name: "Curl à la poulie", bodyPart: .bras, exerciseType: .machine),
 
@@ -136,15 +180,15 @@ struct DefaultExerciseLibrary {
         ExerciseDef(name: "Extension triceps (poulie haute)", bodyPart: .bras, exerciseType: .machine),
         ExerciseDef(name: "Extension triceps (corde)", bodyPart: .bras, exerciseType: .machine),
         ExerciseDef(name: "Barre au front (barre EZ)", bodyPart: .bras, exerciseType: .barreLibre),
-        ExerciseDef(name: "Extension triceps (haltère, au-dessus de la tête)", bodyPart: .bras, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Extension triceps (haltère, au-dessus de la tête)", bodyPart: .bras, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Dips (triceps)", bodyPart: .bras, exerciseType: .poidsDuCorps),
-        ExerciseDef(name: "Kickback triceps (haltère)", bodyPart: .bras, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Kickback triceps (haltère)", bodyPart: .bras, exerciseType: .poidsLibre, isUnilateral: true),
 
         // MARK: - Jambes
         ExerciseDef(name: "Squat (barre)", bodyPart: .jambes, exerciseType: .barreLibre),
         ExerciseDef(name: "Squat goblet (haltère)", bodyPart: .jambes, exerciseType: .poidsLibre),
         ExerciseDef(name: "Presse à cuisses", bodyPart: .jambes, exerciseType: .machine),
-        ExerciseDef(name: "Fentes (haltères)", bodyPart: .jambes, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Fentes (haltères)", bodyPart: .jambes, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Fentes (barre)", bodyPart: .jambes, exerciseType: .barreLibre),
         ExerciseDef(name: "Leg extension (machine)", bodyPart: .jambes, exerciseType: .machine),
         ExerciseDef(name: "Leg curl (machine)", bodyPart: .jambes, exerciseType: .machine),
@@ -155,9 +199,9 @@ struct DefaultExerciseLibrary {
         ExerciseDef(name: "Hip thrust (barre)", bodyPart: .jambes, exerciseType: .barreLibre),
 
         // MARK: - Fessiers
-        ExerciseDef(name: "Hip thrust (haltère)", bodyPart: .fessiers, exerciseType: .poidsLibre),
+        ExerciseDef(name: "Hip thrust (haltère)", bodyPart: .fessiers, exerciseType: .poidsLibre, isUnilateral: true),
         ExerciseDef(name: "Pont fessier (poids du corps)", bodyPart: .fessiers, exerciseType: .poidsDuCorps),
-        ExerciseDef(name: "Kickback fessier (poulie)", bodyPart: .fessiers, exerciseType: .machine),
+        ExerciseDef(name: "Kickback fessier (poulie)", bodyPart: .fessiers, exerciseType: .machine, isUnilateral: true),
         ExerciseDef(name: "Abduction hanche (machine)", bodyPart: .fessiers, exerciseType: .machine),
 
         // MARK: - Abdos

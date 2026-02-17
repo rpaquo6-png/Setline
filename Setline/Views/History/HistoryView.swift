@@ -119,7 +119,7 @@ private struct SessionHistoryRow: View {
 
                 let totalVolume = session.sets
                     .filter { $0.isCompleted }
-                    .reduce(0.0) { $0 + (Double($1.reps ?? 0) * ($1.load ?? 0)) }
+                    .reduce(0.0) { $0 + (Double($1.reps ?? 0) * ($1.load ?? 0) * ($1.exercise?.isUnilateral == true ? 2 : 1)) }
                 if totalVolume > 0 {
                     Label("\(Int(totalVolume)) kg", systemImage: "scalemass")
                         .font(.caption2)
@@ -198,7 +198,7 @@ struct SessionDetailView: View {
 
                         let totalVolume = session.sets
                             .filter { $0.isCompleted }
-                            .reduce(0.0) { $0 + (Double($1.reps ?? 0) * ($1.load ?? 0)) }
+                            .reduce(0.0) { $0 + (Double($1.reps ?? 0) * ($1.load ?? 0) * ($1.exercise?.isUnilateral == true ? 2 : 1)) }
                         if totalVolume > 0 {
                             Label("\(Int(totalVolume)) kg volume total", systemImage: "scalemass")
                                 .font(.caption)

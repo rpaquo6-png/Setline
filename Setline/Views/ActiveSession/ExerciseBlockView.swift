@@ -61,6 +61,16 @@ struct ExerciseBlockView: View {
                     .textCase(nil)
                     .foregroundStyle(.primary)
 
+                if group.exercise.isUnilateral {
+                    Text("×2")
+                        .font(.caption2.weight(.semibold))
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(Color.orange.opacity(0.15))
+                        .foregroundStyle(.orange)
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
+
                 if let percent = group.volumeChangePercent {
                     Text(formatVolumeChange(percent))
                         .font(.caption2.weight(.semibold))

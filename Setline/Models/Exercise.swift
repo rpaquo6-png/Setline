@@ -7,13 +7,15 @@ final class Exercise: Identifiable {
     var name: String
     var bodyPart: BodyPart
     var exerciseType: ExerciseType
+    var isUnilateral: Bool
     var createdAt: Date
 
-    init(name: String, bodyPart: BodyPart, exerciseType: ExerciseType) {
+    init(name: String, bodyPart: BodyPart, exerciseType: ExerciseType, isUnilateral: Bool = false) {
         self.id = UUID()
         self.name = name
         self.bodyPart = bodyPart
         self.exerciseType = exerciseType
+        self.isUnilateral = isUnilateral
         self.createdAt = Date()
     }
 }

@@ -29,16 +29,17 @@ final class ExerciseListViewModel {
         exercises = (try? modelContext.fetch(descriptor)) ?? []
     }
 
-    func createExercise(name: String, bodyPart: BodyPart, exerciseType: ExerciseType) {
-        let exercise = Exercise(name: name, bodyPart: bodyPart, exerciseType: exerciseType)
+    func createExercise(name: String, bodyPart: BodyPart, exerciseType: ExerciseType, isUnilateral: Bool = false) {
+        let exercise = Exercise(name: name, bodyPart: bodyPart, exerciseType: exerciseType, isUnilateral: isUnilateral)
         modelContext.insert(exercise)
         loadExercises()
     }
 
-    func updateExercise(_ exercise: Exercise, name: String, bodyPart: BodyPart, exerciseType: ExerciseType) {
+    func updateExercise(_ exercise: Exercise, name: String, bodyPart: BodyPart, exerciseType: ExerciseType, isUnilateral: Bool = false) {
         exercise.name = name
         exercise.bodyPart = bodyPart
         exercise.exerciseType = exerciseType
+        exercise.isUnilateral = isUnilateral
         loadExercises()
     }
 

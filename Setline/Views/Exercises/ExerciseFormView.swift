@@ -21,6 +21,7 @@ struct ExerciseFormView: View {
     @State private var name: String = ""
     @State private var bodyPart: BodyPart = .pectoraux
     @State private var exerciseType: ExerciseType = .barreLibre
+    @State private var isUnilateral: Bool = false
     @State private var showDuplicateAlert = false
 
     private var isEditing: Bool {
@@ -62,6 +63,12 @@ struct ExerciseFormView: View {
                     }
                     .pickerStyle(.menu)
                 }
+
+                Section {
+                    Toggle("Unilatéral", isOn: $isUnilateral)
+                } footer: {
+                    Text("Le volume sera doublé (×2) pour refléter le travail des deux côtés.")
+                }
             }
             .navigationTitle(isEditing ? "Modifier" : "Nouvel exercice")
             .navigationBarTitleDisplayMode(.inline)
@@ -91,6 +98,7 @@ struct ExerciseFormView: View {
                     name = exercise.name
                     bodyPart = exercise.bodyPart
                     exerciseType = exercise.exerciseType
+                    isUnilateral = exercise.isUnilateral
                 }
             }
         }
@@ -108,9 +116,9 @@ struct ExerciseFormView: View {
     private func forceSave() {
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
         if let exercise = editingExercise {
-            viewModel.updateExercise(exercise, name: trimmedName, bodyPart: bodyPart, exerciseType: exerciseType)
+            viewModel.updateExercise(exercise, name: trimmedName, bodyPart: bodyPart, exerciseType: exerciseType, isUnilateral: isUnilateral)
         } else {
-            viewModel.createExercise(name: trimmedName, bodyPart: bodyPart, exerciseType: exerciseType)
+            viewModel.createExercise(name: trimmedName, bodyPart: bodyPart, exerciseType: exerciseType, isUnilateral: isUnilateral)
         }
         dismiss()
     }

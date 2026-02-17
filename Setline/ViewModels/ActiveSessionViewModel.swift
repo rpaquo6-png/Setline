@@ -69,8 +69,9 @@ final class ActiveSessionViewModel {
         for id in orderedIds {
             guard var group = groups[id] else { continue }
             if let lastVolume = group.lastSessionVolume, lastVolume > 0 {
+                let multiplier: Double = group.exercise.isUnilateral ? 2 : 1
                 let currentVolume = group.sets.reduce(0.0) { sum, set in
-                    sum + Double(set.reps ?? 0) * (set.load ?? 0)
+                    sum + Double(set.reps ?? 0) * (set.load ?? 0) * multiplier
                 }
                 group.volumeChangePercent = ((currentVolume - lastVolume) / lastVolume) * 100
             }
