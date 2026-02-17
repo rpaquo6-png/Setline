@@ -10,6 +10,7 @@ struct ActiveSessionView: View {
     @State private var showFinishConfirmation = false
     @State private var showCancelConfirmation = false
     @State private var historyExercise: Exercise?
+    @State private var exerciseToReplace: UUID?
 
     let restTimerService: RestTimerService
 
@@ -41,6 +42,7 @@ struct ActiveSessionView: View {
                                     onDeleteSet: { set in viewModel.deleteSet(set) },
                                     onToggleSet: { set in viewModel.toggleSetCompletion(set) },
                                     onRemoveExercise: { viewModel.removeExercise(group.id) },
+                                    onReplaceExercise: { exerciseToReplace = group.id },
                                     onUpdateRestSeconds: { seconds in viewModel.updateRestSeconds(for: group.id, seconds: seconds) },
                                     onShowHistory: { historyExercise = group.exercise }
                                 )
@@ -145,6 +147,20 @@ struct ActiveSessionView: View {
                     viewModel?.addExercise(exercise)
                 })
             }
+            .sheet(isPresented: Binding(
+                get: { exerciseToReplace != nil },
+                set: { if !$0 { exerciseToReplace = nil } }
+            )) {
+                ExercisePickerSheet(
+                    title: "Remplacer l'exercice",
+                    onSelectExercise: { exercise in
+                        if let id = exerciseToReplace {
+                            viewModel?.substituteExercise(exerciseId: id, newExercise: exercise)
+                        }
+                        exerciseToReplace = nil
+                    }
+                )
+            }
             .sheet(item: $historyExercise) { exercise in
                 ExerciseHistoryView(exercise: exercise)
             }
@@ -164,6 +180,7 @@ struct ActiveSessionView: View {
 private struct ExercisePickerSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    var title: String = "Ajouter un exercice"
     let onSelectExercise: (Exercise) -> Void
 
     @State private var exercises: [Exercise] = []
@@ -189,7 +206,7 @@ private struct ExercisePickerSheet: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Ajouter un exercice")
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Rechercher")
             .toolbar {

@@ -19,6 +19,8 @@ final class ActiveSessionViewModel {
         var sets: [WorkoutSet]
         var restSeconds: Int
         var previousPerformance: [Int: String] // setNumber -> "8 × 40 kg"
+        var lastSessionVolume: Double?
+        var volumeChangePercent: Double? // % change vs last session
     }
 
     init(session: WorkoutSession, modelContext: ModelContext, restTimerService: RestTimerService) {
@@ -48,16 +50,31 @@ final class ActiveSessionViewModel {
                 // Compute previous performance for this exercise
                 let previous = historyService.previousSetPerformances(for: exercise)
 
+                let lastVolume = historyService.lastSessionVolume(for: exercise)
+
                 groups[exercise.id] = ExerciseGroup(
                     id: exercise.id,
                     exercise: exercise,
                     orderIndex: set.exerciseOrderIndex,
                     sets: [set],
                     restSeconds: session.restSeconds(for: exercise.id),
-                    previousPerformance: previous
+                    previousPerformance: previous,
+                    lastSessionVolume: lastVolume
                 )
                 orderedIds.append(exercise.id)
             }
+        }
+
+        // Compute volume change % now that all sets are collected per group
+        for id in orderedIds {
+            guard var group = groups[id] else { continue }
+            if let lastVolume = group.lastSessionVolume, lastVolume > 0 {
+                let currentVolume = group.sets.reduce(0.0) { sum, set in
+                    sum + Double(set.reps ?? 0) * (set.load ?? 0)
+                }
+                group.volumeChangePercent = ((currentVolume - lastVolume) / lastVolume) * 100
+            }
+            groups[id] = group
         }
 
         exerciseGroups = orderedIds.compactMap { groups[$0] }
@@ -157,6 +174,21 @@ final class ActiveSessionViewModel {
         for set in group.sets {
             modelContext.delete(set)
         }
+
+        rebuildGroups()
+    }
+
+    func substituteExercise(exerciseId: UUID, newExercise: Exercise) {
+        guard let group = exerciseGroups.first(where: { $0.id == exerciseId }) else { return }
+
+        // Reassign the exercise on every set (keeps order, setNumber, reps, load, completion)
+        for set in group.sets {
+            set.exercise = newExercise
+        }
+
+        // Transfer rest seconds from old exercise to new one
+        let restSecs = session.restSeconds(for: exerciseId)
+        session.setRestSeconds(restSecs, for: newExercise.id)
 
         rebuildGroups()
     }

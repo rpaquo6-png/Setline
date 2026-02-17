@@ -6,6 +6,7 @@ struct ExerciseBlockView: View {
     let onDeleteSet: (WorkoutSet) -> Void
     let onToggleSet: (WorkoutSet) -> Void
     let onRemoveExercise: () -> Void
+    let onReplaceExercise: () -> Void
     let onUpdateRestSeconds: (Int) -> Void
     let onShowHistory: () -> Void
 
@@ -55,17 +56,19 @@ struct ExerciseBlockView: View {
             }
         } header: {
             HStack {
-                Button {
-                    onShowHistory()
-                } label: {
-                    HStack(spacing: 4) {
-                        Text(group.exercise.name)
-                            .font(.headline)
-                            .textCase(nil)
-                        Image(systemName: "clock.arrow.circlepath")
-                            .font(.caption)
-                    }
+                Text(group.exercise.name)
+                    .font(.headline)
+                    .textCase(nil)
                     .foregroundStyle(.primary)
+
+                if let percent = group.volumeChangePercent {
+                    Text(formatVolumeChange(percent))
+                        .font(.caption2.weight(.semibold))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(percent >= 0 ? Color.green.opacity(0.15) : Color.red.opacity(0.15))
+                        .foregroundStyle(percent >= 0 ? .green : .red)
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
 
                 Spacer()
@@ -84,11 +87,29 @@ struct ExerciseBlockView: View {
                     .foregroundStyle(.secondary)
                 }
 
-                // Remove exercise button
-                Button(role: .destructive) {
-                    onRemoveExercise()
+                // Actions menu
+                Menu {
+                    Button {
+                        onShowHistory()
+                    } label: {
+                        Label("Historique", systemImage: "clock.arrow.circlepath")
+                    }
+
+                    Button {
+                        onReplaceExercise()
+                    } label: {
+                        Label("Remplacer l'exercice", systemImage: "arrow.triangle.2.circlepath")
+                    }
+
+                    Divider()
+
+                    Button(role: .destructive) {
+                        onRemoveExercise()
+                    } label: {
+                        Label("Supprimer l'exercice", systemImage: "trash")
+                    }
                 } label: {
-                    Image(systemName: "xmark.circle.fill")
+                    Image(systemName: "ellipsis.circle")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -106,6 +127,11 @@ struct ExerciseBlockView: View {
         } message: {
             Text("Temps de repos en secondes pour \(group.exercise.name)")
         }
+    }
+
+    private func formatVolumeChange(_ percent: Double) -> String {
+        let rounded = Int(percent.rounded())
+        return rounded >= 0 ? "+\(rounded)%" : "\(rounded)%"
     }
 
     private func formatRestTime(_ seconds: Int) -> String {
