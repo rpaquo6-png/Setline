@@ -8,7 +8,14 @@
       "Bash(plutil:*)",
       "Bash(git init:*)",
       "Bash(git -C /Users/romain.paquereau/Documents/WorkoutTracker remote add:*)",
-      "Bash(git -C /Users/romain.paquereau/Documents/WorkoutTracker add .)"
+      "Bash(git -C /Users/romain.paquereau/Documents/WorkoutTracker add .)",
+      "Bash(git -C /Users/romain.paquereau/Documents/WorkoutTracker commit -m \"$\\(cat <<''EOF''\nInitial commit - WorkoutTracker app\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /Users/romain.paquereau/Documents/WorkoutTracker push -u origin main)",
+      "Bash(gh auth status:*)",
+      "Bash(git -C /Users/romain.paquereau/Documents/WorkoutTracker remote set-url:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }

@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct WorkoutTrackerApp: App {
+struct SetlineApp: App {
     let modelContainer: ModelContainer
 
     init() {

@@ -7,7 +7,7 @@ struct EndRestIntent: LiveActivityIntent {
 
     func perform() async throws -> some IntentResult {
         // Signal the main app via App Group UserDefaults
-        let defaults = UserDefaults(suiteName: "group.com.workouttrackerclaude.app")
+        let defaults = UserDefaults(suiteName: "group.com.setlineclaude.app")
         defaults?.set(true, forKey: "endRestRequested")
         defaults?.synchronize()
 

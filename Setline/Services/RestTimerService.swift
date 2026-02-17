@@ -20,7 +20,7 @@ final class RestTimerService {
     private var timer: Timer?
     private var restEndTime: Date?
     private var currentActivity: Activity<WorkoutActivityAttributes>?
-    private let appGroupId = "group.com.workouttrackerclaude.app"
+    private let appGroupId = "group.com.setlineclaude.app"
 
     func startRest(seconds: Int, nextSet: NextSetInfo?) {
         endRest()

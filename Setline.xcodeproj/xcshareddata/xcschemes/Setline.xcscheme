@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6467659005103B3F100F0D23"
-               BuildableName = "WorkoutTracker.app"
-               BlueprintName = "WorkoutTracker"
-               ReferencedContainer = "container:WorkoutTracker.xcodeproj">
+               BlueprintIdentifier = "D603BD59019B73191F313D99"
+               BuildableName = "Setline.app"
+               BlueprintName = "Setline"
+               ReferencedContainer = "container:Setline.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,10 +29,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C6FB695EE9898A2D21DE8827"
+               BlueprintIdentifier = "89997E0DC87C89F696D44645"
                BuildableName = "WorkoutWidgetExtension.appex"
                BlueprintName = "WorkoutWidgetExtension"
-               ReferencedContainer = "container:WorkoutTracker.xcodeproj">
+               ReferencedContainer = "container:Setline.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,10 +46,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6467659005103B3F100F0D23"
-            BuildableName = "WorkoutTracker.app"
-            BlueprintName = "WorkoutTracker"
-            ReferencedContainer = "container:WorkoutTracker.xcodeproj">
+            BlueprintIdentifier = "D603BD59019B73191F313D99"
+            BuildableName = "Setline.app"
+            BlueprintName = "Setline"
+            ReferencedContainer = "container:Setline.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -69,10 +69,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6467659005103B3F100F0D23"
-            BuildableName = "WorkoutTracker.app"
-            BlueprintName = "WorkoutTracker"
-            ReferencedContainer = "container:WorkoutTracker.xcodeproj">
+            BlueprintIdentifier = "D603BD59019B73191F313D99"
+            BuildableName = "Setline.app"
+            BlueprintName = "Setline"
+            ReferencedContainer = "container:Setline.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -88,10 +88,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6467659005103B3F100F0D23"
-            BuildableName = "WorkoutTracker.app"
-            BlueprintName = "WorkoutTracker"
-            ReferencedContainer = "container:WorkoutTracker.xcodeproj">
+            BlueprintIdentifier = "D603BD59019B73191F313D99"
+            BuildableName = "Setline.app"
+            BlueprintName = "Setline"
+            ReferencedContainer = "container:Setline.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
