@@ -6,6 +6,7 @@ struct StartSessionView: View {
     @State private var viewModel: StartSessionViewModel?
     @Binding var activeSession: WorkoutSession?
     @State private var showDeleteConfirmation = false
+    @State private var selectedTemplate: Template?
 
     var body: some View {
         NavigationStack {
@@ -90,10 +91,7 @@ struct StartSessionView: View {
 
                             ForEach(templates, id: \.id) { template in
                                 Button {
-                                    if let vm = viewModel {
-                                        let session = vm.startFromTemplate(template)
-                                        activeSession = session
-                                    }
+                                    selectedTemplate = template
                                 } label: {
                                     HStack {
                                         VStack(alignment: .leading, spacing: 4) {
@@ -139,6 +137,14 @@ struct StartSessionView: View {
                 }
             } message: {
                 Text("Cette action est irréversible. Toutes les séries seront perdues.")
+            }
+            .sheet(item: $selectedTemplate) { template in
+                TemplatePreviewSheet(template: template) {
+                    if let vm = viewModel {
+                        let session = vm.startFromTemplate(template)
+                        activeSession = session
+                    }
+                }
             }
             .onAppear {
                 if viewModel == nil {

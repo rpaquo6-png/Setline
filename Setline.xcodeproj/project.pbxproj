@@ -21,6 +21,7 @@
 		6329BE6FC32485AECE66A65C /* NumericTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2200090F46D69EA62597C47 /* NumericTextField.swift */; };
 		63E492AE25C4B5C094BC745C /* StartSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CE820257C34732448F5114 /* StartSessionViewModel.swift */; };
 		66246B9EFA3A30EF2F769435 /* StartSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4551A13B6B7C34C1C82D1953 /* StartSessionView.swift */; };
+		A1B2C3D4E5F60718192A3B4C /* TemplatePreviewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6071819A2B3C4D5E6F7 /* TemplatePreviewSheet.swift */; };
 		69936878692223B385D74E92 /* RestTimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A72BCB55E5B1C88A0D12777 /* RestTimerService.swift */; };
 		6C149CD66405AA9565A8F8DB /* TemplateExerciseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA24CEB958CC211B191F430 /* TemplateExerciseRow.swift */; };
 		6DB7554E6A06394799124883 /* DefaultExerciseLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C2336BC811B333B3841FE /* DefaultExerciseLibrary.swift */; };
@@ -95,6 +96,7 @@
 		3A72BCB55E5B1C88A0D12777 /* RestTimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerService.swift; sourceTree = "<group>"; };
 		40CADB4F69054A14B366A16D /* Setline.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Setline.entitlements; sourceTree = "<group>"; };
 		4551A13B6B7C34C1C82D1953 /* StartSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSessionView.swift; sourceTree = "<group>"; };
+		D4E5F6071819A2B3C4D5E6F7 /* TemplatePreviewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePreviewSheet.swift; sourceTree = "<group>"; };
 		46D0C5430399BF262574CEB9 /* BodyPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyPart.swift; sourceTree = "<group>"; };
 		5ADDBEDD918626EDE80526D6 /* TemplateListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateListViewModel.swift; sourceTree = "<group>"; };
 		608F81A574360691A58B8581 /* SetlineApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetlineApp.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				4551A13B6B7C34C1C82D1953 /* StartSessionView.swift */,
+				D4E5F6071819A2B3C4D5E6F7 /* TemplatePreviewSheet.swift */,
 			);
 			path = StartSession;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				98C3A835D6C167EE642BD723 /* SetRowView.swift in Sources */,
 				C7E1EDD15D038B815CB78D27 /* SetlineApp.swift in Sources */,
 				66246B9EFA3A30EF2F769435 /* StartSessionView.swift in Sources */,
+				A1B2C3D4E5F60718192A3B4C /* TemplatePreviewSheet.swift in Sources */,
 				63E492AE25C4B5C094BC745C /* StartSessionViewModel.swift in Sources */,
 				8331ABA5A8D5FB5DA33CAD02 /* Template.swift in Sources */,
 				E2FED9CFBE9BCC200F9E9FD9 /* TemplateEditorView.swift in Sources */,
